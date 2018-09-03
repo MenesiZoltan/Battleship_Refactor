@@ -6,10 +6,6 @@ def generate_game_board(size):
     return table
 
 
-def check_if_place_is_available():
-    pass
-
-
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
         os.system("clear")
