@@ -5,6 +5,14 @@ def generate_game_board(size):
     table = [["_" for x in range(size)]for y in range(size)]
     return table
 
+"""
+def request_player_input():
+    available_inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    player_input = int(input("Please enter coordinate: "))
+    while player_input not in available_inputs: 
+        player_input = int(input("Please enter coordinate: "))
+    return player_input
+"""
 
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
@@ -65,7 +73,10 @@ def print_ship_placement_turn(ship_length, ship_number):
 def fire_at_coordinate(board, enemy_board):
     row_number = int(input("row coordinate for fire: "))
     column_number = int(input("column coordinate for fire: "))
-    board[row_number - 1][column_number - 1] = "\u2716"
+    if enemy_board[row_number - 1][column_number -1] == "\u23CF":
+        board[row_number - 1][column_number - 1] = "A"
+    else:    
+        board[row_number - 1][column_number - 1] = "\u2716"
     enemy_board[row_number - 1][column_number - 1] = "X"
     os.system("clear")
     return board
@@ -107,6 +118,12 @@ def main():
     player1_tracker = generate_game_board(board_size)
     player2_tracker = generate_game_board(board_size)
     #Add ships for both players, need to improve further
+
+    """row_coordinate = request_player_input()
+    column_coordinate = request_player_input()
+    print(row_coordinate)
+    print(column_coordinate)
+    """
     player1_board = request_player_ships(game_board_p1, length_of_gunboats, number_of_gunboats)
     #player1_board = request_player_ships(game_board_p1, length_of_destroyers, number_of_destroyers)
     #player1_board = request_player_ships(game_board_p1, length_of_cruisers, number_of_cruisers)
