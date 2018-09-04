@@ -16,14 +16,14 @@ def request_player_input():
     return player_input
 
 def coordinate_is_available(x_coordinate, y_coordinate, board):
-    if board[x_coordinate][y_coordinate] == "\u23CF":
+    if board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
         return False
-    if board[x_coordinate][y_coordinate] == "_":
+    if board[x_coordinate - 1][y_coordinate - 1] == "_":
         return True
 
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
-        # os.system("clear")
+        os.system("clear")
         print_ship_placement_turn(ship_length, ship_number)
         for x in board:
             print(x)
