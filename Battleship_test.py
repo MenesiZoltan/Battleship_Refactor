@@ -15,18 +15,30 @@ def request_player_input():
     player_input = int(player_input)
     return player_input
 
+def coordinate_is_available(x_coordinate, y_coordinate, board):
+    if board[x_coordinate][y_coordinate] == "\u23CF":
+        return False
+    if board[x_coordinate][y_coordinate] == "_":
+        return True
 
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
-        os.system("clear")
+        # os.system("clear")
         print_ship_placement_turn(ship_length, ship_number)
         for x in board:
             print(x)
         ship_block_counter = 0
-        print("Please enter row coordinate:")
-        row_number = request_player_input()
-        print("Please enter column coordinate:")
-        column_number = request_player_input()
+        is_input_ok = False
+        while is_input_ok == False:
+            print("Please enter row coordinate:")
+            row_number = request_player_input()
+            print("Please enter column coordinate:")
+            column_number = request_player_input()
+            if coordinate_is_available(row_number, column_number, board) == True:
+                print("ok")
+                is_input_ok = True
+            else:
+                print("not ok, enter new")
         if ship_length > 1:
             direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
             if direction_of_ship == "up":
@@ -53,6 +65,7 @@ def request_player_ships(board, ship_length, ship_number):
             board[row_number - 1][column_number - 1] = "\u23CF"
             ship_number -= 1
     os.system("clear")
+
 
 def print_ship_placement_turn(ship_length, ship_number):
     if ship_length == 1:
