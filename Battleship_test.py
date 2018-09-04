@@ -5,14 +5,16 @@ def generate_game_board():
     table = [["_" for x in range(10)]for y in range(10)]
     return table
 
-"""
+
 def request_player_input():
-    available_inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    player_input = int(input("Please enter coordinate: "))
-    while player_input not in available_inputs: 
-        player_input = int(input("Please enter coordinate: "))
+    available_inputs = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    player_input = input()
+    while player_input not in available_inputs:
+        print("Invalid input, please try again: ") 
+        player_input = input()
+    player_input = int(player_input)
     return player_input
-"""
+
 
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
@@ -21,8 +23,10 @@ def request_player_ships(board, ship_length, ship_number):
         for x in board:
             print(x)
         ship_block_counter = 0
-        row_number = int(input("Please enter row: "))
-        column_number = int(input("Please enter column: "))
+        print("Please enter row coordinate:")
+        row_number = request_player_input()
+        print("Please enter column coordinate:")
+        column_number = request_player_input()
         if ship_length > 1:
             direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
             if direction_of_ship == "up":
@@ -137,4 +141,3 @@ def main():
             exit()
 
 main()
-
