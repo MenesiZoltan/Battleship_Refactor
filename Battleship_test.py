@@ -15,11 +15,51 @@ def request_player_input():
     player_input = int(player_input)
     return player_input
 
+
 def coordinate_is_available(x_coordinate, y_coordinate, board):
     if board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
         return False
     if board[x_coordinate - 1][y_coordinate - 1] == "_":
         return True
+
+
+def input_check_function(board):
+    is_input_ok = False
+        #Will try to put 32-42 into a separate function
+    while is_input_ok == False:
+        print("Please enter row coordinate:")
+        x_coordinate = request_player_input()
+        print("Please enter column coordinate:")
+        y_coordinate = request_player_input()
+        if coordinate_is_available(x_coordinate, y_coordinate, board) == True:
+            print("ok")
+            is_input_ok = True
+        else:
+            print("not ok, enter new")
+        input_list = [x_coordinate, y_coordinate]  
+    return input_list
+
+
+
+def print_ship_placement_turn(ship_length, ship_number):
+    if ship_length == 1:
+        print("Placing Gunboats - Max 4, length 1.")
+        print("Ships remaining: " + str(ship_number))
+        ship_number -= 1
+    if ship_length == 2:
+        print("Placing Destroyers - Max 3, length 2.")
+        print("Ships remaining: " + str(ship_number))
+        ship_number -= 1
+    if ship_length == 3:
+        print("Placing Cruisers - Max 2, length 3.")
+        print("Ships remaining: " + str(ship_number))
+        ship_number -= 1
+    if ship_length == 4:
+        print("placing Carrier - Max 1, length 4")
+        print("Ships remaining: " + str(ship_number))
+        ship_number -= 1
+
+
 
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
@@ -28,18 +68,9 @@ def request_player_ships(board, ship_length, ship_number):
         for x in board:
             print(x)
         ship_block_counter = 0
-        is_input_ok = False
-        #Will try to put 32-42 into a separate function
-        while is_input_ok == False:
-            print("Please enter row coordinate:")
-            row_number = request_player_input()
-            print("Please enter column coordinate:")
-            column_number = request_player_input()
-            if coordinate_is_available(row_number, column_number, board) == True:
-                print("ok")
-                is_input_ok = True
-            else:
-                print("not ok, enter new")
+        input_list = input_check_function(board)
+        row_number = input_list[0]
+        column_number = input_list[1]
         if ship_length > 1:
             direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
             if direction_of_ship == "up":
@@ -68,23 +99,15 @@ def request_player_ships(board, ship_length, ship_number):
     os.system("clear")
 
 
-def print_ship_placement_turn(ship_length, ship_number):
-    if ship_length == 1:
-        print("Placing Gunboats - Max 4, length 1.")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-    if ship_length == 2:
-        print("Placing Destroyers - Max 3, length 2.")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-    if ship_length == 3:
-        print("Placing Cruisers - Max 2, length 3.")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-    if ship_length == 4:
-        print("placing Carrier - Max 1, length 4")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
+def player_boards(tracker, board):
+    print("Fires shot so far at:\n")
+    for x in tracker:
+        print(x)
+    print("\n")
+    print("Your board\n")
+    for y in board:
+        print(y)
+    print("\n")
 
 
 def fire_at_coordinate(board, enemy_board):
@@ -96,17 +119,6 @@ def fire_at_coordinate(board, enemy_board):
         board[row_number - 1][column_number - 1] = "\u2716"
     enemy_board[row_number - 1][column_number - 1] = "X"
     os.system("clear")
-
-
-def player_boards(tracker, board):
-    print("Fires shot so far at:\n")
-    for x in tracker:
-        print(x)
-    print("\n")
-    print("Your board\n")
-    for y in board:
-        print(y)
-    print("\n")
 
 
 def win_condition(player_board):
