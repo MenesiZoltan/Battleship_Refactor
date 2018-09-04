@@ -29,6 +29,7 @@ def request_player_ships(board, ship_length, ship_number):
             print(x)
         ship_block_counter = 0
         is_input_ok = False
+        #Will try to put 32-42 into a separate function
         while is_input_ok == False:
             print("Please enter row coordinate:")
             row_number = request_player_input()
