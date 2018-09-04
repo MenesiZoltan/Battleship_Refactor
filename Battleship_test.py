@@ -1,8 +1,8 @@
 import os
 
 
-def generate_game_board(size):
-    table = [["_" for x in range(size)]for y in range(size)]
+def generate_game_board():
+    table = [["_" for x in range(10)]for y in range(10)]
     return table
 
 """
@@ -49,7 +49,6 @@ def request_player_ships(board, ship_length, ship_number):
             board[row_number - 1][column_number - 1] = "\u23CF"
             ship_number -= 1
     os.system("clear")
-    return board
 
 def print_ship_placement_turn(ship_length, ship_number):
     if ship_length == 1:
@@ -79,7 +78,6 @@ def fire_at_coordinate(board, enemy_board):
         board[row_number - 1][column_number - 1] = "\u2716"
     enemy_board[row_number - 1][column_number - 1] = "X"
     os.system("clear")
-    return board
 
 
 def player_boards(tracker, board):
@@ -103,20 +101,13 @@ def win_condition(player_board):
 
 def main():
     #Variables
-    board_size = 10
-    number_of_gunboats = 4
-    length_of_gunboats = 1
-    number_of_destroyers = 3
-    length_of_destroyers = 2
-    number_of_cruisers = 2
-    length_of_cruisers = 3
-    number_of_carriers = 1
-    length_of_carriers = 4
+    number_of_ships = [4, 3, 2, 1]
+    length_of_ships = [1, 2, 3, 4]
     #Generate game board and trackers
-    game_board_p1 = generate_game_board(board_size)
-    game_board_p2 = generate_game_board(board_size)
-    player1_tracker = generate_game_board(board_size)
-    player2_tracker = generate_game_board(board_size)
+    game_board_p1 = generate_game_board()
+    game_board_p2 = generate_game_board()
+    player1_tracker = generate_game_board()
+    player2_tracker = generate_game_board()
     #Add ships for both players, need to improve further
 
     """row_coordinate = request_player_input()
@@ -124,29 +115,26 @@ def main():
     print(row_coordinate)
     print(column_coordinate)
     """
-    player1_board = request_player_ships(game_board_p1, length_of_gunboats, number_of_gunboats)
-    #player1_board = request_player_ships(game_board_p1, length_of_destroyers, number_of_destroyers)
-    #player1_board = request_player_ships(game_board_p1, length_of_cruisers, number_of_cruisers)
-    #player1_board = request_player_ships(game_board_p1, length_of_carriers, number_of_carriers)
+    for x in range(4):
+        request_player_ships(game_board_p1, length_of_ships[x], number_of_ships[x])
+    for x in range(4):
+        request_player_ships(game_board_p2, length_of_ships[x], number_of_ships[x])
 
-    player2_board = request_player_ships(game_board_p2, length_of_gunboats, number_of_gunboats)
-    #player2_board = request_player_ships(game_board_p2, length_of_destroyers, number_of_destroyers)
-    #player2_board = request_player_ships(game_board_p2, length_of_cruisers, number_of_cruisers)
-    #player2_board = request_player_ships(game_board_p2, length_of_carriers, number_of_carriers)
     #Players taking turns, tracking shots fired and received, Win Condition checks if any ships are remaining in opponets game board.
     #Exit when win condition is met.
     while True:
         print("Player 1 turn:")
-        player_boards(player1_tracker, player1_board)
-        fire_at_coordinate(player1_tracker, player2_board)
-        if win_condition(player2_board) == True:
+        player_boards(player1_tracker, game_board_p1)
+        fire_at_coordinate(player1_tracker, game_board_p2)
+        if win_condition(game_board_p2) == True:
             print("Player 1 won!")
             exit()
         print("Player 2 turn:")
-        player_boards(player2_tracker, player2_board)
-        fire_at_coordinate(player2_tracker, player1_board)
-        if win_condition(player1_board) == True:
+        player_boards(player2_tracker, game_board_p2)
+        fire_at_coordinate(player2_tracker, game_board_p1)
+        if win_condition(game_board_p1) == True:
             print("Player 2 won!")
             exit()
 
 main()
+
