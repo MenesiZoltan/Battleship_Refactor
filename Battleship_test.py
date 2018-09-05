@@ -22,28 +22,20 @@ def coordinate_is_available(x_coordinate, y_coordinate, board):
     if board[x_coordinate - 1][y_coordinate - 1] == "_":
         return True
 
-def check_if_ship_is_outside_of_game_board(row_number, column_number, ship_length):
+def check_if_ship_is_outside_of_game_board_left_or_up(row_number, column_number, ship_length):
      if ship_length > 1:
         direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
         if direction_of_ship == "up":
-            is_direction_good = False
-            while is_direction_good == False:
-                if row_number - (ship_length + 1) < 0:
-                    while direction_of_ship == "up":
-                        print("Enter another direction")
-                        direction_of_ship = input("Please enter direction of ship - down, left, right: ")
-                    is_direction_good = True
-                return direction_of_ship
+            if row_number - (ship_length + 1) < 0:
+                raise IndexError
+            return direction_of_ship
         if direction_of_ship == "left":
-            is_direction_good = False
-            while is_direction_good == False:
-                if column_number - (ship_length + 1) < 0:
-                    while direction_of_ship == "left":
-                        print("Enter another direction")
-                        direction_of_ship = input("Please enter direction of ship - up, down, right: ")
-                    is_direction_good = True
-                return direction_of_ship
+            if column_number - (ship_length + 1) < 0:
+                raise IndexError
+            return direction_of_ship
         return direction_of_ship
+
+
 def input_check_function(board, ship_length):
     is_input_ok = False
     while is_input_ok == False:
@@ -55,9 +47,9 @@ def input_check_function(board, ship_length):
             is_input_ok = True
         else:
             print("Ship Starting coordinate already taken, please enter another one.")
+        
     input_list = [x_coordinate, y_coordinate]  
     return input_list
-
 
 
 def print_ship_placement_turn(ship_length, ship_number):
@@ -79,7 +71,7 @@ def request_player_ships(board, ship_length, ship_number):
             input_list = input_check_function(board, ship_length)
             row_number = input_list[0]
             column_number = input_list[1]
-            direction_of_ship = check_if_ship_is_outside_of_game_board(row_number, column_number, ship_length)
+            direction_of_ship = check_if_ship_is_outside_of_game_board_left_or_up(row_number, column_number, ship_length)
             if ship_length > 1:
                 if direction_of_ship == "up":
                     for x in range(0, ship_length):
@@ -101,7 +93,7 @@ def request_player_ships(board, ship_length, ship_number):
                 board[row_number - 1][column_number - 1] = "\u23CF"
             ship_number -= 1
         except IndexError:
-            print("cica")
+            print("Invalid placement. Please add new coordinates and direction.")
     os.system("clear")
 
 
@@ -136,8 +128,8 @@ def win_condition(player_board):
 
 
 def main():
-    number_of_ships = [1, 1, 1]
-    length_of_ships = [1, 2, 3]
+    number_of_ships = [4, 3, 2, 1]
+    length_of_ships = [1, 2, 3, 4]
     game_board_p1 = generate_game_board()
     game_board_p2 = generate_game_board()
     player1_tracker = generate_game_board()
