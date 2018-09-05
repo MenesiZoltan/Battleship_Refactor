@@ -23,7 +23,7 @@ def coordinate_is_available(x_coordinate, y_coordinate, board):
         return True
 
 
-def input_check_function(board):
+def input_check_function(board, ship_length):
     is_input_ok = False
     while is_input_ok == False:
         print("Please enter row coordinate:")
@@ -31,11 +31,25 @@ def input_check_function(board):
         print("Please enter column coordinate:")
         y_coordinate = request_player_input()
         if coordinate_is_available(x_coordinate, y_coordinate, board) == True:
-            print("ok")
             is_input_ok = True
         else:
-            print("not ok, enter new")
-        input_list = [x_coordinate, y_coordinate]  
+            print("Ship Starting coordinate already taken, please enter another one.")
+        if ship_length > 1:
+            direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
+            if direction_of_ship == "up":
+                pass
+            if direction_of_ship == "down":
+                pass
+            if direction_of_ship == "left":
+                pass
+            if direction_of_ship == "right":
+                pass
+        if ship_length > 1:
+            input_list = [x_coordinate, y_coordinate]  
+            input_list.append(direction_of_ship)
+        else:
+            input_list = [x_coordinate, y_coordinate]  
+            input_list.append("None")
     return input_list
 
 
@@ -55,11 +69,11 @@ def request_player_ships(board, ship_length, ship_number):
         for x in board:
             print(x)
         ship_block_counter = 0
-        input_list = input_check_function(board)
+        input_list = input_check_function(board, ship_length)
         row_number = input_list[0]
         column_number = input_list[1]
+        direction_of_ship = input_list[2]
         if ship_length > 1:
-            direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
             if direction_of_ship == "up":
                 for x in range(0, ship_length):
                     board[(row_number - 1) - ship_block_counter][column_number - 1] = "\u23CF"
@@ -137,4 +151,5 @@ def main():
             print("Player 2 won!")
             exit()
 
-main()
+if __name__ == "__main__":
+    main()
