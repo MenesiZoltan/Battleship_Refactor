@@ -34,22 +34,7 @@ def input_check_function(board, ship_length):
             is_input_ok = True
         else:
             print("Ship Starting coordinate already taken, please enter another one.")
-        if ship_length > 1:
-            direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
-            if direction_of_ship == "up":
-                pass
-            if direction_of_ship == "down":
-                pass
-            if direction_of_ship == "left":
-                pass
-            if direction_of_ship == "right":
-                pass
-        if ship_length > 1:
-            input_list = [x_coordinate, y_coordinate]  
-            input_list.append(direction_of_ship)
-        else:
-            input_list = [x_coordinate, y_coordinate]  
-            input_list.append("None")
+    input_list = [x_coordinate, y_coordinate]  
     return input_list
 
 
@@ -64,35 +49,38 @@ def print_ship_placement_turn(ship_length, ship_number):
 
 def request_player_ships(board, ship_length, ship_number):
     while ship_number > 0:
-        os.system("clear")
-        print_ship_placement_turn(ship_length, ship_number)
-        for x in board:
-            print(x)
-        ship_block_counter = 0
-        input_list = input_check_function(board, ship_length)
-        row_number = input_list[0]
-        column_number = input_list[1]
-        direction_of_ship = input_list[2]
-        if ship_length > 1:
-            if direction_of_ship == "up":
-                for x in range(0, ship_length):
-                    board[(row_number - 1) - ship_block_counter][column_number - 1] = "\u23CF"
-                    ship_block_counter += 1
-            if direction_of_ship == "down":
-                for x in range(0, ship_length):
-                    board[(row_number - 1) + ship_block_counter][column_number - 1] = "\u23CF"
-                    ship_block_counter += 1
-            if direction_of_ship == "left":
-                for x in range(0, ship_length):
-                    board[row_number -1 ][(column_number - 1) - ship_block_counter] = "\u23CF"
-                    ship_block_counter += 1
-            if direction_of_ship == "right":
-                for x in range(0, ship_length):
-                    board[row_number -1 ][(column_number - 1) + ship_block_counter] = "\u23CF"
-                    ship_block_counter += 1
-        else:
-            board[row_number - 1][column_number - 1] = "\u23CF"
-        ship_number -= 1
+        try:
+            os.system("clear")
+            print_ship_placement_turn(ship_length, ship_number)
+            for x in board:
+                print(x)
+            ship_block_counter = 0
+            input_list = input_check_function(board, ship_length)
+            row_number = input_list[0]
+            column_number = input_list[1]
+            if ship_length > 1:
+                direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
+                if direction_of_ship == "up":
+                    for x in range(0, ship_length):
+                        board[(row_number - 1) + ship_block_counter - (ship_length - 1)][column_number - 1] = "\u23CF"
+                        ship_block_counter += 1
+                if direction_of_ship == "down":
+                    for x in range(0, ship_length):
+                        board[(row_number - 1) - ship_block_counter + (ship_length - 1)][column_number - 1] = "\u23CF"
+                        ship_block_counter += 1
+                if direction_of_ship == "left":
+                    for x in range(0, ship_length):
+                        board[row_number -1 ][(column_number - 1) + ship_block_counter - (ship_length - 1)] = "\u23CF"
+                        ship_block_counter += 1
+                if direction_of_ship == "right":
+                    for x in range(0, ship_length):
+                        board[row_number -1 ][(column_number - 1) - ship_block_counter + (ship_length - 1)] = "\u23CF"
+                        ship_block_counter += 1
+            else:
+                board[row_number - 1][column_number - 1] = "\u23CF"
+            ship_number -= 1
+        except IndexError:
+            print("cica")
     os.system("clear")
 
 
@@ -127,7 +115,7 @@ def win_condition(player_board):
 
 
 def main():
-    number_of_ships = [4, 3, 2, 1]
+    number_of_ships = [1, 1, 1, 1]
     length_of_ships = [1, 2, 3, 4]
     game_board_p1 = generate_game_board()
     game_board_p2 = generate_game_board()
