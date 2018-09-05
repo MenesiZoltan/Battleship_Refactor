@@ -61,6 +61,23 @@ def request_player_ships(board, ship_length, ship_number):
             if ship_length > 1:
                 direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
                 if direction_of_ship == "up":
+                    is_direction_good = False
+                    while is_direction_good == False:
+                        if row_number - (ship_length + 1) < 0:
+                            while direction_of_ship == "up":
+                                print("Enter another direction")
+                                direction_of_ship = input("Please enter direction of ship - down, left, right: ")
+                            is_direction_good = True
+                if direction_of_ship == "left":
+                    is_direction_good = False
+                    while is_direction_good == False:
+                        if column_number - (ship_length + 1) < 0:
+                            while direction_of_ship == "left":
+                                print("Enter another direction")
+                                direction_of_ship = input("Please enter direction of ship - up, down, right: ")
+                            is_direction_good = True
+            if ship_length > 1:
+                if direction_of_ship == "up":
                     for x in range(0, ship_length):
                         board[(row_number - 1) + ship_block_counter - (ship_length - 1)][column_number - 1] = "\u23CF"
                         ship_block_counter += 1
