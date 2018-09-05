@@ -64,25 +64,21 @@ def request_player_ships(board, ship_length, ship_number):
                 for x in range(0, ship_length):
                     board[(row_number - 1) - ship_block_counter][column_number - 1] = "\u23CF"
                     ship_block_counter += 1
-                ship_number -= 1
             if direction_of_ship == "down":
                 for x in range(0, ship_length):
                     board[(row_number - 1) + ship_block_counter][column_number - 1] = "\u23CF"
                     ship_block_counter += 1
-                ship_number -= 1
             if direction_of_ship == "left":
                 for x in range(0, ship_length):
                     board[row_number -1 ][(column_number - 1) - ship_block_counter] = "\u23CF"
                     ship_block_counter += 1
-                ship_number -= 1
             if direction_of_ship == "right":
                 for x in range(0, ship_length):
                     board[row_number -1 ][(column_number - 1) + ship_block_counter] = "\u23CF"
                     ship_block_counter += 1
-                ship_number -= 1
         else:
             board[row_number - 1][column_number - 1] = "\u23CF"
-            ship_number -= 1
+        ship_number -= 1
     os.system("clear")
 
 
