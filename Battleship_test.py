@@ -6,6 +6,15 @@ def generate_game_board():
     return table
 
 
+def print_board(board_ID):
+    row_name = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+    print("    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10|")
+    print("–" * 45)
+    for i in range(10):
+        print("  %s | " %(row_name[i]) + "{} | {} | {} | {} | {} | {} | {} | {} | {} | {} |".format(board_ID[i][0], board_ID[i][1], board_ID[i][2], board_ID[i][3], board_ID[i][4], board_ID[i][5], board_ID[i][6], board_ID[i][7], board_ID[i][8], board_ID[i][9]))
+        print("–" * 45)
+
+
 def request_player_input():
     available_inputs = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     player_input = input()
@@ -65,8 +74,9 @@ def request_player_ships(board, ship_length, ship_number):
         try:
             os.system("clear")
             print_ship_placement_turn(ship_length, ship_number)
-            for x in board:
-                print(x)
+            # for x in board:
+                # print(x)
+            print_board(board)
             ship_block_counter = 0
             input_list = input_check_function(board, ship_length)
             row_number = input_list[0]
@@ -99,12 +109,14 @@ def request_player_ships(board, ship_length, ship_number):
 
 def player_boards(tracker, board):
     print("Fires shot so far at:\n")
-    for x in tracker:
-        print(x)
+    # for x in tracker:
+        # print(x)
+    print_board(tracker)
     print("\n")
     print("Your board\n")
-    for y in board:
-        print(y)
+    # for y in board:
+        # print(y)
+    print_board(board)
     print("\n")
 
 
