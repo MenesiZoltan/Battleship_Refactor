@@ -26,11 +26,11 @@ def check_if_ship_is_outside_of_game_board_left_or_up(row_number, column_number,
      if ship_length > 1:
         direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
         if direction_of_ship == "up":
-            if row_number - (ship_length + 1) < 0:
+            if row_number - ship_length < 0:
                 raise IndexError
             return direction_of_ship
         if direction_of_ship == "left":
-            if column_number - (ship_length + 1) < 0:
+            if column_number - ship_length < 0:
                 raise IndexError
             return direction_of_ship
         return direction_of_ship
