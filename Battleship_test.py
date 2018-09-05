@@ -10,7 +10,7 @@ def request_player_input():
     available_inputs = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     player_input = input()
     while player_input not in available_inputs:
-        print("Invalid input, please try again: ") 
+        print("Invalid input, please try again(COOrDINATE): ") 
         player_input = input()
     player_input = int(player_input)
     return player_input
@@ -22,7 +22,28 @@ def coordinate_is_available(x_coordinate, y_coordinate, board):
     if board[x_coordinate - 1][y_coordinate - 1] == "_":
         return True
 
-
+def check_if_ship_is_outside_of_game_board(row_number, column_number, ship_length):
+     if ship_length > 1:
+        direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
+        if direction_of_ship == "up":
+            is_direction_good = False
+            while is_direction_good == False:
+                if row_number - (ship_length + 1) < 0:
+                    while direction_of_ship == "up":
+                        print("Enter another direction")
+                        direction_of_ship = input("Please enter direction of ship - down, left, right: ")
+                    is_direction_good = True
+                return direction_of_ship
+        if direction_of_ship == "left":
+            is_direction_good = False
+            while is_direction_good == False:
+                if column_number - (ship_length + 1) < 0:
+                    while direction_of_ship == "left":
+                        print("Enter another direction")
+                        direction_of_ship = input("Please enter direction of ship - up, down, right: ")
+                    is_direction_good = True
+                return direction_of_ship
+        return direction_of_ship
 def input_check_function(board, ship_length):
     is_input_ok = False
     while is_input_ok == False:
@@ -58,24 +79,7 @@ def request_player_ships(board, ship_length, ship_number):
             input_list = input_check_function(board, ship_length)
             row_number = input_list[0]
             column_number = input_list[1]
-            if ship_length > 1:
-                direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
-                if direction_of_ship == "up":
-                    is_direction_good = False
-                    while is_direction_good == False:
-                        if row_number - (ship_length + 1) < 0:
-                            while direction_of_ship == "up":
-                                print("Enter another direction")
-                                direction_of_ship = input("Please enter direction of ship - down, left, right: ")
-                            is_direction_good = True
-                if direction_of_ship == "left":
-                    is_direction_good = False
-                    while is_direction_good == False:
-                        if column_number - (ship_length + 1) < 0:
-                            while direction_of_ship == "left":
-                                print("Enter another direction")
-                                direction_of_ship = input("Please enter direction of ship - up, down, right: ")
-                            is_direction_good = True
+            direction_of_ship = check_if_ship_is_outside_of_game_board(row_number, column_number, ship_length)
             if ship_length > 1:
                 if direction_of_ship == "up":
                     for x in range(0, ship_length):
@@ -132,15 +136,15 @@ def win_condition(player_board):
 
 
 def main():
-    number_of_ships = [1, 1, 1, 1]
-    length_of_ships = [1, 2, 3, 4]
+    number_of_ships = [1, 1, 1]
+    length_of_ships = [1, 2, 3]
     game_board_p1 = generate_game_board()
     game_board_p2 = generate_game_board()
     player1_tracker = generate_game_board()
     player2_tracker = generate_game_board()
-    for x in range(4):
+    for x in range(3):
         request_player_ships(game_board_p1, length_of_ships[x], number_of_ships[x])
-    for x in range(4):
+    for x in range(3):
         request_player_ships(game_board_p2, length_of_ships[x], number_of_ships[x])
     while True:
         print("Player 1 turn:")
