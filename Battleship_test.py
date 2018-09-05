@@ -25,7 +25,6 @@ def coordinate_is_available(x_coordinate, y_coordinate, board):
 
 def input_check_function(board):
     is_input_ok = False
-        #Will try to put 32-42 into a separate function
     while is_input_ok == False:
         print("Please enter row coordinate:")
         x_coordinate = request_player_input()
@@ -42,23 +41,11 @@ def input_check_function(board):
 
 
 def print_ship_placement_turn(ship_length, ship_number):
-    if ship_length == 1:
-        print("Placing Gunboats - Max 4, length 1.")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-    if ship_length == 2:
-        print("Placing Destroyers - Max 3, length 2.")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-    if ship_length == 3:
-        print("Placing Cruisers - Max 2, length 3.")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-    if ship_length == 4:
-        print("placing Carrier - Max 1, length 4")
-        print("Ships remaining: " + str(ship_number))
-        ship_number -= 1
-
+    for i in range(4):
+        if ship_length == i + 1:
+            print("Placing Gunboats - Max %d, length %d." %(4 - i, i + 1))
+            print("Ships remaining: " + str(ship_number))
+            ship_number -= 1
 
 
 def request_player_ships(board, ship_length, ship_number):
@@ -130,28 +117,16 @@ def win_condition(player_board):
 
 
 def main():
-    #Variables
     number_of_ships = [4, 3, 2, 1]
     length_of_ships = [1, 2, 3, 4]
-    #Generate game board and trackers
     game_board_p1 = generate_game_board()
     game_board_p2 = generate_game_board()
     player1_tracker = generate_game_board()
     player2_tracker = generate_game_board()
-    #Add ships for both players, need to improve further
-
-    """row_coordinate = request_player_input()
-    column_coordinate = request_player_input()
-    print(row_coordinate)
-    print(column_coordinate)
-    """
     for x in range(4):
         request_player_ships(game_board_p1, length_of_ships[x], number_of_ships[x])
     for x in range(4):
         request_player_ships(game_board_p2, length_of_ships[x], number_of_ships[x])
-
-    #Players taking turns, tracking shots fired and received, Win Condition checks if any ships are remaining in opponets game board.
-    #Exit when win condition is met.
     while True:
         print("Player 1 turn:")
         player_boards(player1_tracker, game_board_p1)
