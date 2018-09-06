@@ -32,16 +32,18 @@ def request_player_input():
     available_inputs_column = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     available_row_coordinates = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10}
     player_input_row = input("Please enter row coordinate: " )
-    while player_input_row not in available_inputs_row:
+    player_input_row_upper = player_input_row.upper()
+    while player_input_row_upper not in available_inputs_row:
         print("Invalid input, please try again(COOrDINATE): ") 
         player_input_row = input()
-    player_input_row = available_row_coordinates[player_input_row]
+        player_input_row_upper = player_input_row.upper()
+    player_input_row_upper = available_row_coordinates[player_input_row_upper]
     player_input_column = input("Please enter column coordinate: ")
     while player_input_column not in available_inputs_column:
         print("Invalid input, please try again(COOrDINATE): ") 
         player_input_column = input()
     player_input_column = int(player_input_column)
-    return [player_input_row, player_input_column]
+    return [player_input_row_upper, player_input_column]
     
 
 def coordinate_is_available(x_coordinate, y_coordinate, board):
