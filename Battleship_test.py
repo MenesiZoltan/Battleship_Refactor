@@ -11,19 +11,38 @@ def print_board(board_ID):
     print("    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10|")
     print("–" * 45)
     for i in range(10):
-        print("  %s | " %(row_name[i]) + "{} | {} | {} | {} | {} | {} | {} | {} | {} | {} |".format(board_ID[i][0], board_ID[i][1], board_ID[i][2], board_ID[i][3], board_ID[i][4], board_ID[i][5], board_ID[i][6], board_ID[i][7], board_ID[i][8], board_ID[i][9]))
+        print("  {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |".format(
+            row_name[i], 
+            board_ID[i][0], 
+            board_ID[i][1], 
+            board_ID[i][2], 
+            board_ID[i][3], 
+            board_ID[i][4], 
+            board_ID[i][5], 
+            board_ID[i][6], 
+            board_ID[i][7], 
+            board_ID[i][8], 
+            board_ID[i][9]
+            ))
         print("–" * 45)
 
 
 def request_player_input():
-    available_inputs = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    player_input = input()
-    while player_input not in available_inputs:
+    available_inputs_row = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+    available_inputs_column = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    available_row_coordinates = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10}
+    player_input_row = input("Please enter row coordinate: " )
+    while player_input_row not in available_inputs_row:
         print("Invalid input, please try again(COOrDINATE): ") 
-        player_input = input()
-    player_input = int(player_input)
-    return player_input
-
+        player_input_row = input()
+    player_input_row = available_row_coordinates[player_input_row]
+    player_input_column = input("Please enter column coordinate: ")
+    while player_input_column not in available_inputs_column:
+        print("Invalid input, please try again(COOrDINATE): ") 
+        player_input_column = input()
+    player_input_column = int(player_input_column)
+    return [player_input_row, player_input_column]
+    
 
 def coordinate_is_available(x_coordinate, y_coordinate, board):
     if board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
@@ -47,11 +66,10 @@ def check_if_ship_is_outside_of_game_board_left_or_up(row_number, column_number,
 
 def input_check_function(board, ship_length):
     is_input_ok = False
+    coordinate_x_y = request_player_input()
     while is_input_ok == False:
-        print("Please enter row coordinate:")
-        x_coordinate = request_player_input()
-        print("Please enter column coordinate:")
-        y_coordinate = request_player_input()
+        x_coordinate = coordinate_x_y[0]
+        y_coordinate = coordinate_x_y[1]
         if coordinate_is_available(x_coordinate, y_coordinate, board) == True:
             is_input_ok = True
         else:
@@ -146,9 +164,9 @@ def main():
     game_board_p2 = generate_game_board()
     player1_tracker = generate_game_board()
     player2_tracker = generate_game_board()
-    for x in range(3):
+    for x in range(4):
         request_player_ships(game_board_p1, length_of_ships[x], number_of_ships[x])
-    for x in range(3):
+    for x in range(4):
         request_player_ships(game_board_p2, length_of_ships[x], number_of_ships[x])
     while True:
         print("Player 1 turn:")
