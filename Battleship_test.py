@@ -2,7 +2,7 @@ import os
 
 
 def generate_game_board():
-    table = [["_" for x in range(10)]for y in range(10)]
+    table = [[" " for x in range(10)]for y in range(10)]
     return table
 
 
@@ -49,7 +49,7 @@ def request_player_input():
 def coordinate_is_available(x_coordinate, y_coordinate, board):
     if board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
         return False
-    if board[x_coordinate - 1][y_coordinate - 1] == "_":
+    if board[x_coordinate - 1][y_coordinate - 1] == " ":
         return True
 
 
@@ -77,6 +77,7 @@ def input_check_function(board, ship_length):
             is_input_ok = True
         else:
             print("Ship Starting coordinate already taken, please enter another one.")
+            raise IndexError
 
     input_list = [x_coordinate, y_coordinate]  
     return input_list
@@ -136,13 +137,15 @@ def player_boards(tracker, board):
 
 
 def fire_at_coordinate(board, enemy_board):
-    row_number = int(input("row coordinate for fire: "))
-    column_number = int(input("column coordinate for fire: "))
-    if enemy_board[row_number - 1][column_number - 1] == "\u23CF":
-        board[row_number - 1][column_number - 1] = "A"
+    print("Please enter coordinates to fire at.")
+    coordinate_x_y = request_player_input()
+    x_coordinate = coordinate_x_y[0]
+    y_coordinate = coordinate_x_y[1]
+    if enemy_board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
+        board[x_coordinate - 1][y_coordinate - 1] = "X"
     else:    
-        board[row_number - 1][column_number - 1] = "\u2716"
-    enemy_board[row_number - 1][column_number - 1] = "X"
+        board[x_coordinate - 1][y_coordinate - 1] = "/"
+    enemy_board[x_coordinate - 1][y_coordinate - 1] = "X"
     os.system("clear")
 
 
@@ -161,9 +164,9 @@ def main():
     game_board_p2 = generate_game_board()
     player1_tracker = generate_game_board()
     player2_tracker = generate_game_board()
-    for x in range(4):
+    for x in range(1):
         request_player_ships(game_board_p1, length_of_ships[x], number_of_ships[x])
-    for x in range(4):
+    for x in range(1):
         request_player_ships(game_board_p2, length_of_ships[x], number_of_ships[x])
     while True:
         print("Player 1 turn:")
