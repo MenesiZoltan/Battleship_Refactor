@@ -6,23 +6,23 @@ def generate_game_board():
     return table
 
 
-def print_board(board_ID):
+def print_board(board):
     row_name = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
     print("    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10|")
     print("–" * 45)
     for i in range(10):
         print("  {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |".format(
             row_name[i],
-            board_ID[i][0],
-            board_ID[i][1],
-            board_ID[i][2],
-            board_ID[i][3],
-            board_ID[i][4],
-            board_ID[i][5],
-            board_ID[i][6],
-            board_ID[i][7],
-            board_ID[i][8],
-            board_ID[i][9]
+            board[i][0],
+            board[i][1],
+            board[i][2],
+            board[i][3],
+            board[i][4],
+            board[i][5],
+            board[i][6],
+            board[i][7],
+            board[i][8],
+            board[i][9]
             ))
         print("–" * 45)
 
@@ -46,34 +46,37 @@ def request_player_input():
     return [player_input_row_upper, player_input_column]
 
 
-def coordinate_is_available(x_coordinate, y_coordinate, board):
-    if board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
+def coordinate_is_available(x_coordinate, y_coordinate, player_board):
+    if player_board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
         return False
-    if board[x_coordinate - 1][y_coordinate - 1] == " ":
+    if player_board[x_coordinate - 1][y_coordinate - 1] == " ":
         return True
 
 
-def check_if_ship_is_outside_of_game_board_left_or_up(row_number, column_number, ship_length):
+def check_if_ship_is_outside_of_game_board_left_or_up(x_coordinate, y_coordinate, ship_length):
     if ship_length > 1:
+        available_directions = ["up", "down", "right", "left"]
         direction_of_ship = input("Please enter direction of ship - up, down, left, right: ")
+        while direction_of_ship not in available_directions:
+            direction_of_ship = input("Direction not available or there was a typo.\nPlease enter another direction: ")
         if direction_of_ship == "up":
-            if row_number - ship_length < 0:
+            if x_coordinate - ship_length < 0:
                 raise IndexError
             return direction_of_ship
         if direction_of_ship == "left":
-            if column_number - ship_length < 0:
+            if y_coordinate - ship_length < 0:
                 raise IndexError
             return direction_of_ship
         return direction_of_ship
 
 
-def input_check_function(board, ship_length):
+def input_check_function(player_board, ship_length):
     is_input_ok = False
     coordinate_x_y = request_player_input()
     while is_input_ok is False:
         x_coordinate = coordinate_x_y[0]
         y_coordinate = coordinate_x_y[1]
-        if coordinate_is_available(x_coordinate, y_coordinate, board) is True:
+        if coordinate_is_available(x_coordinate, y_coordinate, player_board) is True:
             is_input_ok = True
         else:
             print("Ship Starting coordinate already taken, please enter another one.")
@@ -91,66 +94,66 @@ def print_ship_placement_turn(ship_length, ship_number):
             ship_number -= 1
 
 
-def request_player_ships(board, ship_length, ship_number):
+def request_player_ships(player_board, ship_length, ship_number):
     while ship_number > 0:
         try:
             os.system("clear")
             print_ship_placement_turn(ship_length, ship_number)
-            print_board(board)
+            print_board(player_board)
             ship_block_counter = 0
-            input_list = input_check_function(board, ship_length)
-            row_number = input_list[0]
-            column_number = input_list[1]
-            direction_of_ship = check_if_ship_is_outside_of_game_board_left_or_up(row_number, column_number, ship_length)
+            input_list = input_check_function(player_board, ship_length)
+            x_coordinate = input_list[0]
+            y_coordinate = input_list[1]
+            direction_of_ship = check_if_ship_is_outside_of_game_board_left_or_up(x_coordinate, y_coordinate, ship_length)
             if ship_length > 1:
                 if direction_of_ship == "up":
                     for x in range(0, ship_length):
-                        board[(row_number - 1) + ship_block_counter - (ship_length - 1)][column_number - 1] = "\u23CF"
+                        player_board[(x_coordinate - 1) + ship_block_counter - (ship_length - 1)][y_coordinate - 1] = "\u23CF"
                         ship_block_counter += 1
                 if direction_of_ship == "down":
                     for x in range(0, ship_length):
-                        board[(row_number - 1) - ship_block_counter + (ship_length - 1)][column_number - 1] = "\u23CF"
+                        player_board[(x_coordinate - 1) - ship_block_counter + (ship_length - 1)][y_coordinate - 1] = "\u23CF"
                         ship_block_counter += 1
                 if direction_of_ship == "left":
                     for x in range(0, ship_length):
-                        board[row_number - 1][(column_number - 1) + ship_block_counter - (ship_length - 1)] = "\u23CF"
+                        player_board[x_coordinate - 1][(y_coordinate - 1) + ship_block_counter - (ship_length - 1)] = "\u23CF"
                         ship_block_counter += 1
                 if direction_of_ship == "right":
                     for x in range(0, ship_length):
-                        board[row_number - 1][(column_number - 1) - ship_block_counter + (ship_length - 1)] = "\u23CF"
+                        player_board[x_coordinate - 1][(y_coordinate - 1) - ship_block_counter + (ship_length - 1)] = "\u23CF"
                         ship_block_counter += 1
             else:
-                board[row_number - 1][column_number - 1] = "\u23CF"
+                player_board[x_coordinate - 1][y_coordinate - 1] = "\u23CF"
             ship_number -= 1
         except IndexError:
             print("Invalid placement. Please add new coordinates and direction.")
     os.system("clear")
 
 
-def player_boards(tracker, board):
+def player_boards(tracker_board, player_board):
     print("Fires shot so far at:\n")
-    print_board(tracker)
+    print_board(tracker_board)
     print("\n")
     print("Your board\n")
-    print_board(board)
+    print_board(player_board)
     print("\n")
 
 
-def fire_at_coordinate(board, enemy_board):
+def fire_at_coordinate(tracker_board, enemy_game_board):
     print("Please enter coordinates to fire at.")
     coordinate_x_y = request_player_input()
     x_coordinate = coordinate_x_y[0]
     y_coordinate = coordinate_x_y[1]
-    if enemy_board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
-        board[x_coordinate - 1][y_coordinate - 1] = "X"
+    if enemy_game_board[x_coordinate - 1][y_coordinate - 1] == "\u23CF":
+        tracker_board[x_coordinate - 1][y_coordinate - 1] = "X"
     else:    
-        board[x_coordinate - 1][y_coordinate - 1] = "/"
-    enemy_board[x_coordinate - 1][y_coordinate - 1] = "X"
+        tracker_board[x_coordinate - 1][y_coordinate - 1] = "/"
+    enemy_game_board[x_coordinate - 1][y_coordinate - 1] = "X"
     os.system("clear")
 
 
-def win_condition(player_board):
-    for x in player_board:
+def win_condition(enemy_game_board):
+    for x in enemy_game_board:
         for y in x:
             if "\u23CF" in x:
                 return False
@@ -164,9 +167,9 @@ def main():
     game_board_p2 = generate_game_board()
     player1_tracker = generate_game_board()
     player2_tracker = generate_game_board()
-    for x in range(1):
+    for x in range(4):
         request_player_ships(game_board_p1, length_of_ships[x], number_of_ships[x])
-    for x in range(1):
+    for x in range(4):
         request_player_ships(game_board_p2, length_of_ships[x], number_of_ships[x])
     while True:
         print("Player 1 turn:")
